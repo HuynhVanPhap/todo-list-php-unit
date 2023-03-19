@@ -16,6 +16,9 @@
         {{ session('success') ?? '' }}
     </p>
     <p class="text-danger">
+        {{ session('fail') ?? '' }}
+    </p>
+    <p class="text-danger">
         {{ $errors->first('task') ?? '' }}
     </p>
 
