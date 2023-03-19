@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: "./app/"
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - "../:/var/www/html"
+    depends_on:
+      - db
+
+  #Nginx Service
+  webserver:
+    image: "nginx"
+    restart: unless-stopped
+    ports:
+      # - "${APP_PORT}:80"
+      - "80:80"
+      - "6001:6001"
+    volumes:
+      - "../:/var/www/html"
+      - "./server/nginx.conf:/etc/nginx/conf.d/default.conf"
+
+  # DB UI management service
+  adminer:
+    image: "phpmyadmin:latest"
+    restart: unless-stopped
+    ports:
+      # - ${ADMINER_PORT}:8080
+      - "85:80"
+    depends_on:
+      - db
+
+  #MySQL Service
+  db:
+    image: "mysql:8.0"
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./data/:/var/lib/mysql/"
