@@ -1,28 +1,14 @@
-<form
-    method="post"
-    @if ($update)
-        action="{{ route('todo.update', $todo->id) }}"
-    @else
-        action="{{ route('todo.store') }}"
-    @endif
->
-    @csrf
-
-    @if ($update)
-        @method("PUT")
-    @endif
-
-    <p class="text-success">
-        {{ session('success') ?? '' }}
-    </p>
-    <p class="text-danger">
-        {{ $errors->first('task') ?? '' }}
-    </p>
+<form method="POST">
+    <p id="success-message" class="text-success"></p>
+    <p id="error-message" class="text-danger"></p>
 
     <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Enter Something..." name="task" value="{{ $todo->task ?? '' }}">
-        <button type="submit" class="btn btn-primary" name="{{ $update ? 'update' : 'add'}}">
-            {{ $update ? 'Update' : 'Add'}}
+        <input type="text" class="form-control" placeholder="Enter Something..." name="task" data-id="">
+        <button type="submit" id="add-submit" class="btn btn-primary">
+            Add
+        </button>
+        <button type="submit" id="update-submit" class="btn btn-primary">
+            Update
         </button>
     </div>
 </form>
